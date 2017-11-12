@@ -1,2 +1,1 @@
-# quentinha-s
-Quentinha's API
+# Quentinha's API
