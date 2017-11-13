@@ -1,3 +1,5 @@
+var bcrypt = require('bcrypt');
+
 class UserBusiness {
     constructor(userRepository) {
         this.repository = userRepository;
@@ -18,12 +20,16 @@ class UserBusiness {
             try {
                 this.checkCpf(user.cpf)
                 this.checkName(user.name)
+                var salt = bcrypt.genSaltSync(10);
+                var hash = bcrypt.hashSync(user.password, salt)
                 this.repository.findByCpf(user.cpf).catch((error) => {
                     //console.log(error)
                     this.repository.insert({
                         cpf: user.cpf,
                         name: user.name,
-                        password: user.password
+                        password: hash,
+                        tel: user.tel,
+                        email: user.email
                     }).then((u) => {
                         resolve(u)
                     })
@@ -53,6 +59,24 @@ class UserBusiness {
             await this.repository.findByPassword(password).then((res) => {
                 this.repository.remove(password)
             })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async login(user) {
+        try {
+            var senha = false
+            var cpf = false
+            await this.repository.findByCpf(user.cpf).then((res) => {
+                var foi = bcrypt.compareSync(user.password, res.password);
+                if (foi === true) {
+                    console.log('senha compativel')
+                } else {
+                    console.log('senha nao compativel')
+                }
+            })
+
         } catch (error) {
             console.log(error)
         }

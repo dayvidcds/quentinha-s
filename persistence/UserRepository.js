@@ -7,6 +7,8 @@ class UserRepository {
             cpf: String,
             name: String,
             password: String,
+            tel: String,
+            email: String
         })
         this.userModel = this.connection.model('User', this.schema)
     }
