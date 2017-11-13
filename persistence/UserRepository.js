@@ -4,7 +4,8 @@ class UserRepository {
     constructor(connection) {
         this.connection = connection
         this.schema = new mongoose.Schema({
-            username: String,
+            cpf: String,
+            name: String,
             password: String,
         })
         this.userModel = this.connection.model('User', this.schema)
@@ -41,7 +42,7 @@ class UserRepository {
 
     async findAll() {
         return new Promise((resolve, reject) => {
-            console.log('entrou')
+            //console.log('entrou')
             var result = null
             var error = ''
             this.userModel.find((err, res) => {
@@ -49,7 +50,7 @@ class UserRepository {
                         error = err
                         reject(error)
                     }
-                    console.log(res)
+                    //console.log(res)
                     resolve(res)
                         //result = res
                 })
@@ -57,6 +58,34 @@ class UserRepository {
         });
     }
 
+    async findByCpf(cpf) {
+        return new Promise((resolve, reject) => {
+            var error = ''
+            var result = null
+            this.userModel.findOne({ cpf: cpf }, (err, res) => {
+                if (err || (res == null)) {
+                    error = err
+                    reject(err)
+                }
+                resolve(res)
+            })
+        })
+    }
+
+    async findByPassword(password) {
+        return new Promise((resolve, reject) => {
+            var error = ''
+            var result = null
+            this.userModel.findOne({ password: password }, (err, res) => {
+                if (err || (res == null)) {
+                    error = err
+                    reject(err)
+                }
+                resolve(res)
+            })
+        })
+
+    }
 }
 
 module.exports = UserRepository
