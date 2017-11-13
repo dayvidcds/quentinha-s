@@ -14,21 +14,17 @@ var uRep = new UserRepository(db);
 
 var userBusiness = new UserBusiness(uRep);
 
-app.use('/', (er, res) => {
-    res.send('Bem Vindo!')
-});
-
 app.use('/user', routerUser);
 
 // Inicio das rotas usuário
 
-routerUser.get('/find', (req, res) => {
+routerUser.get('/findAll', (req, res) => {
     userBusiness.findAllUsers().then((resp) => {
         res.send(resp)
     })
 })
 
-routerUser.post('/insert/user', (req, res) => {
+routerUser.post('/insert', (req, res) => {
     userBusiness.insert({
         cpf: req.body.cpf,
         name: req.body.name,
@@ -38,7 +34,7 @@ routerUser.post('/insert/user', (req, res) => {
     })
 })
 
-routerUser.post('/remove/user', (req, res) => {
+routerUser.post('/remove', (req, res) => {
     userBusiness.remove(
         req.body.password
     ).then((resp) => {
