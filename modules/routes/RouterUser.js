@@ -2,6 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 
+var cookieParser = require('cookie-parser');
+
 var db = require('../../Persistence/ConnectionDB');
 
 var routerUser = express.Router();
@@ -15,7 +17,10 @@ var uRep = new UserRepository(db);
 
 var userBusiness = new UserBusiness(uRep);
 
+routerUser.use(cookieParser());
+
 routerUser.post('/login', (req, res) => {
+    // clearCookie('userCookie')
     userBusiness.login({
         password: req.body.password,
         cpf: req.body.cpf
@@ -24,16 +29,17 @@ routerUser.post('/login', (req, res) => {
             var jwtSecret = 'SECRET'
             var token = jwt.sign(resp.toJSON(), jwtSecret, {
                 expiresIn: 1440
-            });
-            res.json({
-                success: true,
-                message: 'Token criado!',
-                token: token
             })
+            userBusiness.setOnline(resp.cpf, true)
+            res.cookie('userCookie', {
+                token: token,
+                user: resp
+            })
+            res.redirect('/user/home')
         } else {
             res.json({
                 success: false,
-                message: 'Token não criado!',
+                message: 'Token não criado! CPF ou senha inválidos!',
                 token: 'null'
             })
         }
@@ -53,7 +59,9 @@ routerUser.post('/insert', (req, res) => {
 })
 
 routerUser.use((req, res, next) => {
-    var token = req.body.token || req.query.token || req.headers['x-access-token']
+    var token = req.cookies.userCookie.token; // req.body.token || req.query.token || req.headers['x-access-token']
+
+    //console.log(token)
 
     if (token) {
         var jwtSecret = 'SECRET'
@@ -94,8 +102,25 @@ routerUser.post('/remove', (req, res) => {
     })
 })
 
+routerUser.get('/logout', (req, res) => {
+    var userOn = req.cookies.userCookie.user
+    userBusiness.setOnline(userOn.cpf, false)
+    res.cookie('userCookie', {
+        token: null
+    })
+    res.send({
+        success: true,
+        message: 'Token liberado!'
+    })
+})
+
 routerUser.get('/home', (req, res) => {
-    res.send('BEM VINDO')
+    var userOn = req.cookies.userCookie.user
+    res.send({
+        success: true,
+        message: 'Welcome',
+        user: userOn
+    })
 })
 
 module.exports = routerUser
