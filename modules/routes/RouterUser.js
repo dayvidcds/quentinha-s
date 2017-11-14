@@ -33,7 +33,12 @@ routerUser.post('/login', (req, res) => {
             userBusiness.setOnline(resp.cpf, true)
             res.cookie('userCookie', {
                 token: token,
-                user: resp
+                user: {
+                    name: resp.name,
+                    cpf: resp.cpf,
+                    email: resp.email,
+                    tel: resp.tel
+                }
             })
             res.redirect('/user/home')
         } else {
@@ -60,8 +65,6 @@ routerUser.post('/insert', (req, res) => {
 
 routerUser.use((req, res, next) => {
     var token = req.cookies.userCookie.token; // req.body.token || req.query.token || req.headers['x-access-token']
-
-    //console.log(token)
 
     if (token) {
         var jwtSecret = 'SECRET'
