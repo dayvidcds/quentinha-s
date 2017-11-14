@@ -74,6 +74,20 @@ class UserRepository {
         })
     }
 
+    async setOnline(cpf, mode) {
+        //return Promise.all()
+        var error = ''
+        await this.userModel.findOneAndUpdate({ cpf: cpf }, { $set: { connected: mode } },
+            (err, res) => {
+                if (err) {
+                    error = err
+                }
+            })
+        if (error != '') {
+            throw new Error(error)
+        }
+    }
+
     async findByPassword(password) {
         return new Promise((resolve, reject) => {
             var error = ''

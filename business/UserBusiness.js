@@ -29,7 +29,8 @@ class UserBusiness {
                         name: user.name,
                         password: hash,
                         tel: user.tel,
-                        email: user.email
+                        email: user.email,
+                        connected: false
                     }).then((u) => {
                         resolve(u)
                     })
@@ -64,22 +65,34 @@ class UserBusiness {
         }
     }
 
-    async login(user) {
+    async setOnline(cpf, mode) {
         try {
-            var senha = false
-            var cpf = false
-            await this.repository.findByCpf(user.cpf).then((res) => {
-                var foi = bcrypt.compareSync(user.password, res.password);
-                if (foi === true) {
-                    console.log('senha compativel')
-                } else {
-                    console.log('senha nao compativel')
-                }
-            })
-
+            this.checkCpf(cpf)
+            await this.repository.findByCpf(cpf)
+            await this.repository.setOnline(cpf, mode)
         } catch (error) {
-            console.log(error)
+            throw new Error(error)
         }
+    }
+
+    async login(user) {
+        return new Promise((resolve, reject) => {
+            try {
+                var senha = false
+                var cpf = false
+                this.repository.findByCpf(user.cpf).then((res) => {
+                    var foi = bcrypt.compareSync(user.password, res.password);
+                    if (foi === true) {
+                        resolve(res)
+                    } else {
+                        resolve(null)
+                    }
+                })
+
+            } catch (error) {
+                console.log(error)
+            }
+        })
     }
 
 }
