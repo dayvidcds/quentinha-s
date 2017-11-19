@@ -1,5 +1,6 @@
 var app = require('./App')
 var port = process.env.PORT || 3000
+var host = '192.168.0.105'
 
 var server = app.listen(port, (err, res) => {
     var error = ''

@@ -8,7 +8,8 @@ class UserRepository {
             name: String,
             password: String,
             tel: String,
-            email: String
+            email: String,
+            connected: Boolean
         })
         this.userModel = this.connection.model('User', this.schema)
     }
@@ -23,11 +24,25 @@ class UserRepository {
                 }
                 if (error !== '') {
                     //throw new Error(error)
-                    reject
+                    reject(err)
                 }
                 resolve(res)
             })
         })
+    }
+
+    async setOnline(cpf, mode) {
+        //return Promise.all()
+        var error = ''
+        await this.userModel.findOneAndUpdate({ cpf: cpf }, { $set: { connected: mode } },
+            (err, res) => {
+                if (err) {
+                    error = err
+                }
+            })
+        if (error != '') {
+            throw new Error(error)
+        }
     }
 
     async remove(password) {
@@ -72,20 +87,6 @@ class UserRepository {
                 resolve(res)
             })
         })
-    }
-
-    async setOnline(cpf, mode) {
-        //return Promise.all()
-        var error = ''
-        await this.userModel.findOneAndUpdate({ cpf: cpf }, { $set: { connected: mode } },
-            (err, res) => {
-                if (err) {
-                    error = err
-                }
-            })
-        if (error != '') {
-            throw new Error(error)
-        }
     }
 
     async findByPassword(password) {

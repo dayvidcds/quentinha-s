@@ -1,26 +1,27 @@
 {
-    "name": "dayvid",
-    "version": "1.0.0",
-    "description": "",
-    "engines": {
-        "node": "^6.11.1",
-        "npm": "^2.1.x"
-    },
-    "main": "modules/Server.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node ./modules/Server.js"
-    },
-    "dependencies": {
-        "bcrypt": "^1.0.3",
-        "body-parser": "^1.18.2",
-        "cookie-parser": "^1.4.3",
-        "cookie-session": "^2.0.0-beta.3",
-        "express": "~4.0.0",
-        "express-session": "^1.15.6",
-        "jsonwebtoken": "^8.1.0",
-        "mongoose": "^4.13.2"
-    },
-    "author": "DayvidCDS",
-    "license": "ISC"
+  "name": "dayvid",
+  "version": "1.0.0",
+  "description": "",
+  "engines": {
+    "node": "^6.11.1",
+    "npm": "^2.1.x"
+  },
+  "main": "modules/Server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./modules/Server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "consolidate": "^0.15.0",
+    "cookie-parser": "^1.4.3",
+    "cookie-session": "^2.0.0-beta.3",
+    "express": "~4.0.0",
+    "express-session": "^1.15.6",
+    "jsonwebtoken": "^8.1.0",
+    "mongoose": "^4.13.2"
+  },
+  "author": "DayvidCDS",
+  "license": "ISC"
 }

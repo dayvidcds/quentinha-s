@@ -13,6 +13,8 @@ routerUser.use(bodyParser.json());
 var UserRepository = require('../../persistence/UserRepository');
 var UserBusiness = require('../../business/UserBusiness');
 
+var routerRestaurant = require('./RouterRestaurant');
+
 var uRep = new UserRepository(db);
 
 var userBusiness = new UserBusiness(uRep);
@@ -42,10 +44,14 @@ routerUser.post('/login', (req, res) => {
             })
             res.redirect('/user/home')
         } else {
+            res.cookie('userCookie', {
+                token: null,
+                user: null
+            })
             res.json({
                 success: false,
-                message: 'Token não criado! CPF ou senha inválidos!',
-                token: 'null'
+                message: 'CPF ou senha inválidos!',
+                token: null
             })
         }
     })
@@ -64,8 +70,7 @@ routerUser.post('/insert', (req, res) => {
 })
 
 routerUser.use((req, res, next) => {
-    var token = req.cookies.userCookie.token; // req.body.token || req.query.token || req.headers['x-access-token']
-
+    var token = req.cookies.userCookie.token // req.body.token || req.query.token || req.headers['x-access-token']
     if (token) {
         var jwtSecret = 'SECRET'
         jwt.verify(token, jwtSecret, (err, decoded) => {
@@ -125,5 +130,7 @@ routerUser.get('/home', (req, res) => {
         user: userOn
     })
 })
+
+routerUser.use('/restaurant', routerRestaurant);
 
 module.exports = routerUser

@@ -14,6 +14,8 @@ class UserBusiness {
     }
 
     async insert(user) {
+        //checkName(user.name)
+        //checkCpf(user.cpf)
         return new Promise((resolve, reject) => {
             var userExist = false
             var retorno = null
