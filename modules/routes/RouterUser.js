@@ -13,11 +13,16 @@ routerUser.use(bodyParser.json());
 var UserRepository = require('../../persistence/UserRepository');
 var UserBusiness = require('../../business/UserBusiness');
 
+var FoodSaleRepository = require('../../persistence/FoodSaleRepository');
+var FoodSaleBusiness = require('../../business/FoodSaleBusiness');
+
 var routerRestaurant = require('./RouterRestaurant');
 
 var uRep = new UserRepository(db);
-
 var userBusiness = new UserBusiness(uRep);
+
+var fRep = new FoodSaleRepository(db);
+var foodSaleBusiness = new FoodSaleBusiness(fRep);
 
 routerUser.use(cookieParser());
 
@@ -129,6 +134,20 @@ routerUser.get('/home', (req, res) => {
         message: 'Welcome',
         user: userOn
     })
+})
+
+routerUser.post('/askFood', (req, res) => {
+    var userOn = req.cookies.userCookie.user
+    var cnpj = req.body.cnpj
+    var food = req.body.food
+    var cpf = userOn.cpf
+    foodSaleBusiness.insert(cpf, cnpj, food).then((resp) => {
+        res.send({
+            success: true,
+            message: 'food was purchased'
+        })
+    })
+
 })
 
 routerUser.use('/restaurant', routerRestaurant);

@@ -14,7 +14,6 @@ var RestaurantRepository = require('../../persistence/RestaurantRepository');
 var RestaurantBusiness = require('../../business/RestaurantBusiness');
 
 var rRep = new RestaurantRepository(db);
-
 var restaurantBusiness = new RestaurantBusiness(rRep);
 
 routerRestaurant.use(cookieParser());
@@ -104,6 +103,14 @@ routerRestaurant.use((req, res, next) => {
 
 routerRestaurant.get('/findAll', (req, res) => {
     restaurantBusiness.findAllRestaurants().then((resp) => {
+        res.send(resp)
+    })
+})
+
+routerRestaurant.get('/findAllFoods', (req, res) => {
+    var restaurantOn = req.cookies.restaurantCookie.restaurant
+    var cnpj = restaurantOn.cnpj
+    foodSaleBusiness.findAllFoods(cnpj).then((resp) => {
         res.send(resp)
     })
 })
