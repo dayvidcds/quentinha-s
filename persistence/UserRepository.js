@@ -109,17 +109,33 @@ class UserRepository {
             var error = ''
             var result = null
             this.userModel.aggregate([{
-                $match: {
-                    connected: true
+                    $match: {
+                        connected: true
+                    }
+                }, {
+                    $lookup: {
+                        from: 'restaurants',
+                        localField: 'connected',
+                        foreignField: 'connected',
+                        as: 'restaurants_full'
+                    }
+                }, {
+                    $unwind: '$restaurants_full'
+                },
+                {
+                    $group: {
+                        _id: '$restaurants_full.cnpj',
+                        restaurant: {
+                            $push: {
+                                name: '$restaurants_full.name',
+                                tel: '$restaurants_full.tel',
+                                email: '$restaurants_full.email',
+                                localization: '$restaurants_full.localization'
+                            }
+                        }
+                    }
                 }
-            }, {
-                $lookup: {
-                    from: 'restaurants',
-                    localField: 'connected',
-                    foreignField: 'connected',
-                    as: 'restaurants_full'
-                }
-            }], (err, res) => {
+            ], (err, res) => {
                 if (err) {
                     reject(err)
                 } else {
