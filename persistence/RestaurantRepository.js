@@ -109,6 +109,37 @@ class RestaurantRepository {
         }
     }
 
+    async findFoodOrder(cnpj, date) {
+        return new Promise((resolve, reject) => {
+            var result = null
+            var error = ''
+            this.restaurantModel.aggregate([{
+                $match: {
+                    cnpj: '123456'
+                }
+            }, {
+                $lookup: {
+                    from: 'foodsales',
+                    localField: 'cnpj',
+                    foreignField: 'cnpjRestaurant',
+                    as: 'sales_full'
+                }
+            }, {
+                $unwind: '$sales_full'
+            }, {
+                $match: {
+                    'sales_full.date': { $gte: date }
+                }
+            }], (err, res) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(res)
+                }
+            })
+        })
+    }
+
 }
 
 module.exports = RestaurantRepository

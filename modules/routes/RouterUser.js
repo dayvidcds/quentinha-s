@@ -13,16 +13,10 @@ routerUser.use(bodyParser.json());
 var UserRepository = require('../../persistence/UserRepository');
 var UserBusiness = require('../../business/UserBusiness');
 
-var FoodSaleRepository = require('../../persistence/FoodSaleRepository');
-var FoodSaleBusiness = require('../../business/FoodSaleBusiness');
-
 var routerRestaurant = require('./RouterRestaurant');
 
 var uRep = new UserRepository(db);
 var userBusiness = new UserBusiness(uRep);
-
-var fRep = new FoodSaleRepository(db);
-var foodSaleBusiness = new FoodSaleBusiness(fRep);
 
 routerUser.use(cookieParser());
 
@@ -150,6 +144,10 @@ routerUser.post('/askFood', (req, res) => {
 
 })
 
-routerUser.use('/restaurant', routerRestaurant);
+routerUser.get('/restaurantsOnline', (req, res) => {
+    userBusiness.findRestaurantsOnline().then((resp) => {
+        res.send(resp)
+    })
+});
 
 module.exports = routerUser

@@ -107,10 +107,10 @@ routerRestaurant.get('/findAll', (req, res) => {
     })
 })
 
-routerRestaurant.get('/findAllFoods', (req, res) => {
+routerRestaurant.get('/findFoodOrder', (req, res) => {
     var restaurantOn = req.cookies.restaurantCookie.restaurant
     var cnpj = restaurantOn.cnpj
-    foodSaleBusiness.findAllFoods(cnpj).then((resp) => {
+    restaurantBusiness.findFoodOrder(cnpj).then((resp) => {
         res.send(resp)
     })
 })

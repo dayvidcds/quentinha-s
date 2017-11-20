@@ -97,6 +97,21 @@ class UserBusiness {
         })
     }
 
+    async findRestaurantsOnline() {
+        return new Promise((resolve, reject) => {
+            var error = ''
+            var result = null
+            try {
+                this.repository.findRestaurantsOnline().then((res) => {
+                    resolve(res)
+                })
+            } catch (err) {
+                console.log(err)
+            }
+
+        })
+    }
+
 }
 
 module.exports = UserBusiness

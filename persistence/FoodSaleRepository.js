@@ -60,6 +60,22 @@ class FoodSaleRepository {
         })
     }
 
+    async findAllFoods(cnpj) {
+        return new Promise((resolve, reject) => {
+            var result = null
+            var error = ''
+            this.restaurantModel.find({ cnpj: cnpj }, (err, res) => {
+                if (err) {
+                    error = err
+                    reject(error)
+                }
+                //console.log(res)
+                resolve(res)
+                    //result = res
+            })
+        })
+    }
+
     async findAllFoodsDone(cnpj) {
         return new Promise((resolve, reject) => {
             var result = null

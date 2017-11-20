@@ -98,6 +98,20 @@ class RestaurantBusiness {
         }
     }
 
+    async findFoodOrder(cnpj) {
+        return new Promise((resolve, reject) => {
+            var date = new Date()
+            try {
+                this.repository.findFoodOrder(cnpj, date).then((res) => {
+                    resolve(res)
+                })
+            } catch (err) {
+                console.log(err)
+            }
+
+        })
+    }
+
 }
 
 module.exports = RestaurantBusiness

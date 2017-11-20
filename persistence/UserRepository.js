@@ -103,6 +103,31 @@ class UserRepository {
         })
 
     }
+
+    async findRestaurantsOnline() {
+        return new Promise((resolve, reject) => {
+            var error = ''
+            var result = null
+            this.userModel.aggregate([{
+                $match: {
+                    connected: true
+                }
+            }, {
+                $lookup: {
+                    from: 'restaurants',
+                    localField: 'connected',
+                    foreignField: 'connected',
+                    as: 'restaurants_full'
+                }
+            }], (err, res) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(res)
+                }
+            })
+        })
+    }
 }
 
 module.exports = UserRepository
