@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Sign Up | Bootstrap Based Admin Template - Material Design</title>
+    <title>Sign Up | User</title>
     <!-- Favicon-->
     <link rel="icon" href="/static/views/images/favicon.ico" type="image/x-icon">
 
@@ -28,19 +28,27 @@
 <body class="signup-page">
     <div class="signup-box">
         <div class="logo">
-            <a href="javascript:void(0);">Admin<b>BSB</b></a>
+            <a href="javascript:void(0);">Quentinha<b>'s</b></a>
             <small>Admin BootStrap Based - Material Design</small>
         </div>
         <div class="card">
             <div class="body">
-                <form id="sign_up" method="POST">
+                <form id="sign_up" method="POST" action="/api/restaurant/login">
                     <div class="msg">Register a new membership</div>
                     <div class="input-group">
                         <span class="input-group-addon">
                             <i class="material-icons">person</i>
                         </span>
                         <div class="form-line">
-                            <input type="text" class="form-control" name="namesurname" placeholder="Name Surname" required autofocus>
+                            <input type="text" class="form-control" name="name" placeholder="Name" required autofocus>
+                        </div>
+                    </div>
+					<div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">person</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="text" class="form-control" name="cnpj" placeholder="CNPJ" required>
                         </div>
                     </div>
                     <div class="input-group">
@@ -49,6 +57,22 @@
                         </span>
                         <div class="form-line">
                             <input type="email" class="form-control" name="email" placeholder="Email Address" required>
+                        </div>
+                    </div>
+					<div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">person</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="text" class="form-control" name="phone" placeholder="Phone" required>
+                        </div>
+                    </div>
+					<div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">person</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="text" class="form-control" name="address" placeholder="Address" required>
                         </div>
                     </div>
                     <div class="input-group">
@@ -75,7 +99,7 @@
                     <button class="btn btn-block btn-lg bg-pink waves-effect" type="submit">SIGN UP</button>
 
                     <div class="m-t-25 m-b--5 align-center">
-                        <a href="sign-in.html">You already have a membership?</a>
+                        <a href="login">You already have a membership?</a>
                     </div>
                 </form>
             </div>

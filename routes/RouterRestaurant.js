@@ -3,11 +3,9 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const db = require('../api/persistence/ConnectionDB');
-const RestaurantRepository = require('../api/persistence/RestaurantRepository');
-const RestaurantBusiness = require('../api/business/RestaurantBusiness');
 
 const router = express.Router();
-//router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 router.use(cookieParser());
 
@@ -20,8 +18,11 @@ class RouterRestaurant{
 	
 	initializeRoutes(){
 		router.post('/login', (req, res) => {
+		
+		console.log(req.body)
+			
 		// clearCookie('userCookie')
-		restaurantBusiness.login({
+		this.restaurantBusiness.login({
 			password: req.body.password,
 			cnpj: req.body.cnpj
 		}).then((resp) => {
@@ -30,7 +31,7 @@ class RouterRestaurant{
 				var token = jwt.sign(resp.toJSON(), jwtSecret, {
 					expiresIn: 1440
 				})
-				restaurantBusiness.setOnline(resp.cnpj, true)
+				this.restaurantBusiness.setOnline(resp.cnpj, true)
 				res.cookie('restaurantCookie', {
 					token: token,
 					restaurant: {
@@ -41,7 +42,7 @@ class RouterRestaurant{
 						localization: resp.localization
 					}
 				})
-				res.redirect('/restaurant/home')
+				res.redirect('home')
 			} else {
 				res.cookie('restaurantCookie', {
 					token: null,
@@ -57,7 +58,7 @@ class RouterRestaurant{
 	})
 
 	router.post('/insert', (req, res) => {
-		restaurantBusiness.insert({
+		this.restaurantBusiness.insert({
 			cnpj: req.body.cnpj,
 			name: req.body.name,
 			password: req.body.password,
@@ -70,7 +71,7 @@ class RouterRestaurant{
 	})
 
 	router.get('/findAllOnline', (req, res) => {
-		restaurantBusiness.findAllRestaurantsOnline().then((resp) => {
+		this.restaurantBusiness.findAllRestaurantsOnline().then((resp) => {
 			res.send(resp)
 		})
 	})
@@ -103,7 +104,7 @@ class RouterRestaurant{
 
 
 	router.get('/findAll', (req, res) => {
-		restaurantBusiness.findAllRestaurants().then((resp) => {
+		this.restaurantBusiness.findAllRestaurants().then((resp) => {
 			res.send(resp)
 		})
 	})
@@ -111,7 +112,7 @@ class RouterRestaurant{
 	router.get('/findFoodOrder', (req, res) => {
 		var restaurantOn = req.cookies.restaurantCookie.restaurant
 		var cnpj = restaurantOn.cnpj
-		restaurantBusiness.findFoodOrder(cnpj).then((resp) => {
+		this.restaurantBusiness.findFoodOrder(cnpj).then((resp) => {
 			res.send(resp)
 		})
 	})
@@ -119,7 +120,7 @@ class RouterRestaurant{
 	router.post('/insertFood', (req, res) => {
 		var cnpj = req.body.cnpj
 		var food = req.body.foodName
-		restaurantBusiness.addFood(cnpj, food)
+		this.restaurantBusiness.addFood(cnpj, food)
 		res.send({
 			success: true,
 			message: 'Insert to database',
@@ -128,7 +129,7 @@ class RouterRestaurant{
 
 	router.get('/logout', (req, res) => {
 		var restaurantOn = req.cookies.restaurantCookie.restaurant
-		restaurantBusiness.setOnline(restaurantOn.cnpj, false)
+		this.restaurantBusiness.setOnline(restaurantOn.cnpj, false)
 		res.cookie('restaurantCookie', {
 			token: null
 		})
