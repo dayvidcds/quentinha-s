@@ -1,24 +1,19 @@
-var mongoose = require('mongoose')
-var dbconfig = require('../config/db.json')
-var mongoConn
+const mongoose = require('mongoose')
+const dbconfig = require('../config/db.json')
+let mongoConn = null
 
 mongoose.Promise = global.Promise;
 
 (() => {
-    var url
-    var error = ''
-    url = 'mongodb://' + dbconfig.address + ':' + dbconfig.port + '/' + dbconfig.db
-    mongoConn = mongoose.connect(url, { useMongoClient: true }, (err, res) => {
-        if (err) {
-            console.log('MONGO CONNECTIONS(ERROR)')
-            error = err
-            return
-        }
-        console.log('MONGO CONNECTIONS(SUCESS)')
-    })
-    if (error !== '') {
-        throw new Error(error)
+  let error = ''
+  const url = 'mongodb://' + dbconfig.address + ':' + dbconfig.port + '/' + dbconfig.db
+  mongoConn = mongoose.connect(url, { useMongoClient: true }, (err) => {
+    if (err) {
+      error = err
     }
+  })
+  if (error !== '') {
+    throw Error('erro no db')
+  }
 })()
-
 module.exports = mongoConn
