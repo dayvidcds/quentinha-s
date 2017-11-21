@@ -55,4 +55,8 @@ app.use('/restaurant/forgot', (req, res) => {
 	res.sendFile(pagesDir + '/restaurant/forgot-password.html')
 })
 
+app.use('/', (req, res) => {
+	res.sendFile(pagesDir + '/index.html')
+})
+
 module.exports = app
