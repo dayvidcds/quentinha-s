@@ -6,19 +6,20 @@ const db = require('../api/persistence/ConnectionDB');
 const RestaurantRepository = require('../api/persistence/RestaurantRepository');
 const RestaurantBusiness = require('../api/business/RestaurantBusiness');
 
-const routerRestaurant = express.Router();
-//routerRestaurant.use(bodyParser.urlencoded({ extended: true }));
-routerRestaurant.use(bodyParser.json());
-routerRestaurant.use(cookieParser());
+const router = express.Router();
+//router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.json());
+router.use(cookieParser());
 
 class RouterRestaurant{
 	constructor(restaurantBusiness) {
 		this.restaurantBusiness = restaurantBusiness
 		this.initializeRoutes()
+		this.router = router
 	}
 	
-	async function initializeRoutes(){
-		routerRestaurant.post('/login', (req, res) => {
+	initializeRoutes(){
+		router.post('/login', (req, res) => {
 		// clearCookie('userCookie')
 		restaurantBusiness.login({
 			password: req.body.password,
@@ -55,7 +56,7 @@ class RouterRestaurant{
 		})
 	})
 
-	routerRestaurant.post('/insert', (req, res) => {
+	router.post('/insert', (req, res) => {
 		restaurantBusiness.insert({
 			cnpj: req.body.cnpj,
 			name: req.body.name,
@@ -68,13 +69,13 @@ class RouterRestaurant{
 		})
 	})
 
-	routerRestaurant.get('/findAllOnline', (req, res) => {
+	router.get('/findAllOnline', (req, res) => {
 		restaurantBusiness.findAllRestaurantsOnline().then((resp) => {
 			res.send(resp)
 		})
 	})
 
-	routerRestaurant.use((req, res, next) => {
+	router.use((req, res, next) => {
 		var token = req.cookies.restaurantCookie.token // req.body.token || req.query.token || req.headers['x-access-token']
 		if (token) {
 			var jwtSecret = 'SECRET'
@@ -101,13 +102,13 @@ class RouterRestaurant{
 	})
 
 
-	routerRestaurant.get('/findAll', (req, res) => {
+	router.get('/findAll', (req, res) => {
 		restaurantBusiness.findAllRestaurants().then((resp) => {
 			res.send(resp)
 		})
 	})
 
-	routerRestaurant.get('/findFoodOrder', (req, res) => {
+	router.get('/findFoodOrder', (req, res) => {
 		var restaurantOn = req.cookies.restaurantCookie.restaurant
 		var cnpj = restaurantOn.cnpj
 		restaurantBusiness.findFoodOrder(cnpj).then((resp) => {
@@ -115,7 +116,7 @@ class RouterRestaurant{
 		})
 	})
 
-	routerRestaurant.post('/insertFood', (req, res) => {
+	router.post('/insertFood', (req, res) => {
 		var cnpj = req.body.cnpj
 		var food = req.body.foodName
 		restaurantBusiness.addFood(cnpj, food)
@@ -125,7 +126,7 @@ class RouterRestaurant{
 		})
 	})
 
-	routerRestaurant.get('/logout', (req, res) => {
+	router.get('/logout', (req, res) => {
 		var restaurantOn = req.cookies.restaurantCookie.restaurant
 		restaurantBusiness.setOnline(restaurantOn.cnpj, false)
 		res.cookie('restaurantCookie', {
@@ -137,7 +138,7 @@ class RouterRestaurant{
 		})
 	})
 
-	routerRestaurant.get('/home', (req, res) => {
+	router.get('/home', (req, res) => {
 		var restaurantOn = req.cookies.restaurantCookie.restaurant
 		res.send({
 			success: true,
@@ -147,4 +148,4 @@ class RouterRestaurant{
 	})
 	}
 }
-module.exports = routerRestaurant
+module.exports = RouterRestaurant

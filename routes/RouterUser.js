@@ -4,14 +4,14 @@ var jwt = require('jsonwebtoken');
 
 var cookieParser = require('cookie-parser');
 
-var db = require('../Persistence/ConnectionDB');
+var db = require('../api/persistence/ConnectionDB');
 
 var routerUser = express.Router();
 routerUser.use(bodyParser.urlencoded({ extended: true }));
 routerUser.use(bodyParser.json());
 
-var UserRepository = require('../persistence/UserRepository');
-var UserBusiness = require('../business/UserBusiness');
+var UserRepository = require('../api/persistence/UserRepository');
+var UserBusiness = require('../api/business/UserBusiness');
 
 var routerRestaurant = require('./RouterRestaurant');
 
