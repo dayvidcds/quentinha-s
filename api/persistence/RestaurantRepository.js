@@ -1,194 +1,158 @@
-var mongoose = require('mongoose')
+const mongoose = require('mongoose')
 
 class RestaurantRepository {
-    constructor(connection) {
-        this.connection = connection
-        this.schema = new mongoose.Schema({
-            cnpj: String,
-            name: String,
-            password: String,
-            tel: String,
-            email: String,
-            localization: String,
-            listOfFoods: [String],
-            connected: Boolean
-        })
-        this.restaurantModel = this.connection.model('Restaurant', this.schema)
-    }
+  constructor (connection) {
+    this.connection = connection
+    this.schema = new mongoose.Schema({
+      cnpj: String,
+      name: String,
+      password: String,
+      tel: String,
+      email: String,
+      localization: String,
+      listOfFoods: [String],
+      connected: Boolean
+    })
+    this.RestaurantModel = this.connection.model('Restaurant', this.schema)
+  }
 
-    async insert(restaurant) {
-        return new Promise((resolve, reject) => {
-            var error = ''
-            var restaurantRep = new this.restaurantModel(restaurant);
-            restaurantRep.save((err, res) => {
-                if (err) {
-                    error = err
-                }
-                if (error !== '') {
-                    //throw new Error(error)
-                    reject(err)
-                }
-                resolve(res)
-            })
-        })
-    }
-
-    async findByCnpj(cnpj) {
-        return new Promise((resolve, reject) => {
-            var error = ''
-            var result = null
-            this.restaurantModel.findOne({ cnpj: cnpj }, (err, res) => {
-                if (err || (res == null)) {
-                    error = err
-                    reject(err)
-                }
-                resolve(res)
-            })
-        })
-    }
-
-    async findAll() {
-        return new Promise((resolve, reject) => {
-            //console.log('entrou')
-            var result = null
-            var error = ''
-            this.restaurantModel.find((err, res) => {
-                    if (err) {
-                        error = err
-                        reject(error)
-                    }
-                    //console.log(res)
-                    resolve(res)
-                        //result = res
-                })
-                //return result	
-        })
-    }
-
-    async findAllOnline() {
-        return new Promise((resolve, reject) => {
-            var result = null
-            var error = ''
-            this.restaurantModel.find({ connected: true }, (err, res) => {
-                if (err) {
-                    error = err
-                    reject(error)
-                }
-                //console.log(res)
-                resolve(res)
-                    //result = res
-            })
-        })
-    }
-
-    async setOnline(cnpj, mode) {
-        //return Promise.all()
-        var error = ''
-        await this.restaurantModel.findOneAndUpdate({ cnpj: cnpj }, { $set: { connected: mode } },
-            (err, res) => {
-                if (err) {
-                    error = err
-                }
-            })
-        if (error != '') {
-            throw new Error(error)
+  async insert (restaurant) {
+    return new Promise((resolve, reject) => {
+      const restaurantRep = new this.RestaurantModel(restaurant)
+      restaurantRep.save((err, res) => {
+        if (err) {
+          reject(res)
         }
-    }
+        resolve(res)
+      })
+    })
+  }
 
-    async addFood(cnpj, food) {
-        //return Promise.all()
-        var error = ''
-        await this.restaurantModel.findOneAndUpdate({ cnpj: cnpj }, { $push: { listOfFoods: food } },
-            (err, res) => {
-                if (err) {
-                    error = err
-                }
-            })
-        if (error != '') {
-            throw new Error(error)
+  async findByCnpj (cnpj) {
+    return new Promise((resolve, reject) => {
+      this.RestaurantModel.findOne({ cnpj: cnpj }, (err, res) => {
+        if (err || (res === null)) {
+          reject(err)
         }
-    }
+        resolve(res)
+      })
+    })
+  }
 
-    async findFoodOrder(cnpj, date, mode) {
-        return new Promise((resolve, reject) => {
-            var result = null
-            var error = ''
-            this.restaurantModel.aggregate([{
-                $match: {
-                    cnpj: cnpj
-                }
-            }, {
-                $lookup: {
-                    from: 'foodsales',
-                    localField: 'cnpj',
-                    foreignField: 'cnpjRestaurant',
-                    as: 'sales_full'
-                }
-            }, {
-                $unwind: '$sales_full'
-            }, {
-                $match: {
-                    'sales_full.date': {
-                        $gte: date
-                    },
-                    "sales_full.done": mode
-                }
-            }, {
-                $group: {
-                    _id: '$sales_full.cpfUser',
-                    food: {
-                        $push: '$sales_full.food'
-                    }
-                }
-            }], (err, res) => {
-                if (err) {
-                    reject(err)
-                } else {
-                    resolve(res)
-                }
-            })
-        })
-    }
+  async findAll () {
+    return new Promise((resolve, reject) => {
+      this.RestaurantModel.find((err, res) => {
+        if (err) {
+          reject(err)
+        }
+        resolve(res)
+      })
+    })
+  }
 
-    async findFoodOrderAll(cnpj) {
-        return new Promise((resolve, reject) => {
-            var result = null
-            var error = ''
-            this.restaurantModel.aggregate([{
-                    $match: {
-                        cnpj: '123456'
-                    }
-                }, {
-                    $lookup: {
-                        from: 'foodsales',
-                        localField: 'cnpj',
-                        foreignField: 'cnpjRestaurant',
-                        as: 'sales_full'
-                    }
-                }, {
-                    $unwind: '$sales_full'
-                },
-                {
-                    $group: {
-                        _id: '$sales_full.cpfUser',
-                        food: {
-                            $push: {
-                                food: '$sales_full.food',
-                                date: '$sales_full.date'
-                            }
-                        }
-                    }
-                }
-            ], (err, res) => {
-                if (err) {
-                    reject(err)
-                } else {
-                    resolve(res)
-                }
-            })
-        })
-    }
+  async findAllOnline () {
+    return new Promise((resolve, reject) => {
+      this.RestaurantModel.find({ connected: true }, (err, res) => {
+        if (err) {
+          reject(err)
+        }
+        resolve(res)
+      })
+    })
+  }
 
+  async setOnline (cnpj, mode) {
+    this.RestaurantModel.findOneAndUpdate({ cnpj: cnpj }, { $set: { connected: mode } },
+      (err, doc) => {
+        if (err) {
+          throw new Error(err)
+        }
+      })
+  }
+
+  async addFood (cnpj, food) {
+    this.RestaurantModel.findOneAndUpdate({ cnpj: cnpj }, { $push: { listOfFoods: food } },
+      (err, res) => {
+        if (err) {
+          throw new Error(err)
+        }
+      })
+  }
+
+  async findFoodOrder (cnpj, date, status) {
+    return new Promise((resolve, reject) => {
+      this.RestaurantModel.aggregate([{
+        $match: {
+          cnpj: cnpj
+        }
+      }, {
+        $lookup: {
+          from: 'foodsales',
+          localField: 'cnpj',
+          foreignField: 'cnpjRestaurant',
+          as: 'sales_full'
+        }
+      }, {
+        $unwind: '$sales_full'
+      }, {
+        $match: {
+          'sales_full.date': {
+            $gte: new Date(date)
+          },
+          'sales_full.done': status
+        }
+      }, {
+        $group: {
+          _id: '$sales_full.cpfUser',
+          food: {
+            $push: '$sales_full.food'
+          }
+        }
+      }], (err, res) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(res)
+        }
+      })
+    })
+  }
+
+  async findAllFoodOrder (cnpj) {
+    return new Promise((resolve, reject) => {
+      this.RestaurantModel.aggregate([{
+        $match: {
+          cnpj: cnpj
+        }
+      }, {
+        $lookup: {
+          from: 'foodsales',
+          localField: 'cnpj',
+          foreignField: 'cnpjRestaurant',
+          as: 'sales_full'
+        }
+      }, {
+        $unwind: '$sales_full'
+      },
+      {
+        $group: {
+          _id: '$sales_full.cpfUser',
+          food: {
+            $push: {
+              food: '$sales_full.food',
+              date: '$sales_full.date'
+            }
+          }
+        }
+      }
+      ], (err, res) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(res)
+        }
+      })
+    })
+  }
 }
-
 module.exports = RestaurantRepository

@@ -1,0 +1,4 @@
+{"_id":{"$oid":"5a11d62b78a0fd3384adbf94"},"date":{"$date":"2017-11-19T19:06:19.206Z"},"cpfUser":"11735029475","cnpjRestaurant":"123456","food":["comida 1","comida 2","comida 3"],"done":false,"__v":0}
+{"_id":{"$oid":"5a11d62b7fa0fd3384adbf94"},"date":{"$date":"2017-11-19T19:06:19.206Z"},"cpfUser":"11735029475","cnpjRestaurant":"123456","food":["comida 1","comida 2","comida 3","comida 4"],"done":true,"__v":0}
+{"_id":{"$oid":"5a11d62b7fa0fd3f84adbf94"},"date":{"$date":"2017-11-21T19:06:19.206Z"},"cpfUser":"11735029475","cnpjRestaurant":"123456","food":["comida 1","comida 2","comida 3","comida 4"],"done":false,"__v":0}
+{"_id":{"$oid":"5f11d62b78a0fd3384adbf94"},"date":{"$date":"2017-11-19T19:06:19.206Z"},"cpfUser":"123","cnpjRestaurant":"123456","food":["comida 1","comida 2","comida 3"],"done":false,"__v":0}

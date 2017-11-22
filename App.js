@@ -7,13 +7,6 @@ db.then(() => {
   process.exit(1)
 })
 
-/*
-if (db === null) {
-  console.log('BANCO DE DADOS NÃO INICIALIZADO, ENCERRANDO APLICAÇÃO!')
-  process.exit(1)
-}
-*/
-
 const RestaurantRepository = require('./api/persistence/RestaurantRepository')
 const RestaurantBusiness = require('./api/business/RestaurantBusiness')
 const UserRepository = require('./api/persistence/UserRepository')
@@ -36,7 +29,7 @@ app.use('/scripts/', express.static(scriptsDir))
 
 const rRep = new RestaurantRepository(db)
 const restaurantBusiness = new RestaurantBusiness(rRep)
-const routerRestaurant = new RouterRestaurant(restaurantBusiness)
+const routerRestaurant = new RouterRestaurant(restaurantBusiness, pagesDir)
 
 const uRep = new UserRepository(db)
 const userBusiness = new UserBusiness(uRep)
@@ -70,7 +63,7 @@ app.use('/restaurant/forgot', (req, res) => {
 })
 
 app.use('/', (req, res) => {
-  res.sendFile(pagesDir + '/index.html')
+  res.send('HOME PRETA')
 })
 
 module.exports = app
