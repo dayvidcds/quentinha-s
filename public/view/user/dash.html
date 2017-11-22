@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="scripts/js/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Dash</title>
+</head>
+
+<body>
+    <script>
+
+    $(document).ready(function(){
+	$.get("/user/home", function(data) {
+            alert(JSON.stringify(data));
+        });
+ 	});
+    
+    </script>
+
+</body>
+
+</html>
