@@ -144,6 +144,47 @@ class UserRepository {
             })
         })
     }
+
+    async findFoodAllOrder(cpf) {
+        return new Promise((resolve, reject) => {
+            var result = null
+            var error = ''
+            this.restaurantModel.aggregate([{
+                    $match: {
+                        cpf: cpf
+                    }
+                }, {
+                    $lookup: {
+                        from: 'foodsales',
+                        localField: 'cpf',
+                        foreignField: 'cpfUser',
+                        as: 'sales_full'
+                    }
+                }, {
+                    $unwind: '$sales_full'
+                },
+                {
+                    $group: {
+                        _id: '$sales_full.cnpjRestaurant',
+                        food: {
+                            $push: {
+                                date: '$sales_full.date',
+                                food: '$sales_full.food'
+                            }
+                        }
+                    }
+                }
+            ], (err, res) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(res)
+                }
+            })
+        })
+    }
+
+
 }
 
 module.exports = UserRepository
