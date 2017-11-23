@@ -8,15 +8,16 @@ router.use(bodyParser.json())
 router.use(cookieParser())
 
 class RouterUser {
-    constructor(userBusiness) {
+    constructor(userBusiness, pagesDir) {
         this.userBusiness = userBusiness
         this.initializeRoutes()
+        this.pagesDir = pagesDir
         this.router = router
     }
 
     initializeRoutes() {
         router.post('/login', (req, res) => {
-            console.log(req.body)
+            // console.log(req.body)
 
             // clearCookie('userCookie')
             this.userBusiness.login({
@@ -30,15 +31,16 @@ class RouterUser {
                     })
                     this.userBusiness.setOnline(resp.cpf, true)
                     res.cookie('userCookie', {
-                        token: token,
-                        user: {
-                            name: resp.name,
-                            cpf: resp.cpf,
-                            email: resp.email,
-                            tel: resp.tel
-                        }
-                    })
-                    res.redirect('home')
+                            token: token,
+                            user: {
+                                name: resp.name,
+                                cpf: resp.cpf,
+                                email: resp.email,
+                                tel: resp.tel
+                            }
+                        })
+                        // res.sendFile(this.pagesDir + '/dash.html')
+                    res.sendFile(this.pagesDir + '/user/profile.html')
                 } else {
                     res.cookie('userCookie', {
                         token: null,
@@ -61,7 +63,7 @@ class RouterUser {
                 tel: req.body.tel,
                 email: req.body.email
             }).then((resp) => {
-                res.send(resp)
+                res.redirect('/user/login')
             })
         })
 
@@ -110,10 +112,7 @@ class RouterUser {
             res.cookie('userCookie', {
                 token: null
             })
-            res.send({
-                success: true,
-                message: 'Token liberado!'
-            })
+            res.redirect('/user/login')
         })
 
         router.get('/home', (req, res) => {
@@ -123,6 +122,10 @@ class RouterUser {
                 message: 'Welcome',
                 profile: userOn
             })
+        })
+
+        router.get('/profile', (req, res) => {
+            res.sendFile(this.pagesDir + '/user/profile.html')
         })
 
         router.post('/askFood', (req, res) => {

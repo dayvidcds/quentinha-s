@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="/scripts/js/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Dash</title>
+    <script>
+        $(document).ready(function() {
+            //document.getElementById('a').innerHTML = "TESTE"
+            $.get("/api/restaurant/home", function(data) {
+                alert(JSON.stringify(data));
+            })
+
+        })
+    </script>
+</head>
+
+<body>
+
+
+</body>
+
+</html>

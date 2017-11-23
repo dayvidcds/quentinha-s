@@ -9,15 +9,16 @@ router.use(bodyParser.json())
 router.use(cookieParser())
 
 class RouterRestaurant {
-    constructor(restaurantBusiness) {
+    constructor(restaurantBusiness, pagesDir) {
         this.restaurantBusiness = restaurantBusiness
         this.initializeRoutes()
+        this.pagesDir = pagesDir
         this.router = router
     }
 
     initializeRoutes() {
         router.post('/login', (req, res) => {
-            console.log(req.body)
+            //console.log(req.body)
 
             // clearCookie('userCookie')
             this.restaurantBusiness.login({
@@ -27,26 +28,27 @@ class RouterRestaurant {
                 if (resp) {
                     var jwtSecret = 'SECRET'
                     var token = jwt.sign(resp.toJSON(), jwtSecret, {
-                        expiresIn: 1440
+                        expiresIn: 3000
                     })
                     this.restaurantBusiness.setOnline(resp.cnpj, true)
                     res.cookie('restaurantCookie', {
-                        token: token,
-                        restaurant: {
-                            name: resp.name,
-                            cnpj: resp.cnpj,
-                            email: resp.email,
-                            tel: resp.tel,
-                            localization: resp.localization
-                        }
-                    })
-                    res.redirect('/restaurant/home')
+                            token: token,
+                            restaurant: {
+                                name: resp.name,
+                                cnpj: resp.cnpj,
+                                email: resp.email,
+                                tel: resp.tel,
+                                localization: resp.localization
+                            }
+                        })
+                        //res.redirect('home')
+                    res.sendFile(this.pagesDir + '/restaurant/profile.html')
                 } else {
                     res.cookie('restaurantCookie', {
                         token: null,
                         restaurant: null
                     })
-                    res.json({
+                    res.send({
                         success: false,
                         message: 'CNPJ ou senha inválidos!',
                         token: null
@@ -64,7 +66,7 @@ class RouterRestaurant {
                 email: req.body.email,
                 localization: req.body.localization
             }).then((resp) => {
-                res.send(resp)
+                res.redirect('/restaurant/login')
             })
         })
 
@@ -129,10 +131,7 @@ class RouterRestaurant {
             res.cookie('restaurantCookie', {
                 token: null
             })
-            res.send({
-                success: true,
-                message: 'Token liberado!'
-            })
+            res.redirect('/restaurant/login')
         })
 
         router.get('/home', (req, res) => {
