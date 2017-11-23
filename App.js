@@ -29,6 +29,11 @@ const routerUser = new RouterUser(userBusiness)
 app.use('/user', routerUser.router)
 app.use('/restaurant', routerRestaurant.router)
 
+app.use('/scripts', express.static(__dirname + '/public/view/user/scripts'))
+app.use('/dash', express.static(__dirname + '/public/view/user/dash.html'))
+
+console.log(__dirname + '/public/view/user/scripts')
+
 app.use('/', (req, res) => {
     res.send({
         success: true,
