@@ -42,6 +42,23 @@
 
     <link rel="stylesheet" type="text/css" href="/dist/components/reset.css">
 
+    <link rel="stylesheet" type="text/css" href="/dist/components/reset.css">
+    <link rel="stylesheet" type="text/css" href="/dist/components/site.css">
+    <link rel="stylesheet" type="text/css" href="/dist/components/grid.css">
+
+    <!--- Component CSS -->
+    <link rel="stylesheet" type="text/css" href="/dist/components/icon.css">
+    <link rel="stylesheet" type="text/css" href="/dist/components/table.css">
+    <link rel="stylesheet" type="text/css" href="/dist/components/button.css">
+    <link rel="stylesheet" type="text/css" href="/dist/components/transition.css">
+    <link rel="stylesheet" type="text/css" href="/dist/components/popup.css">
+
+    <!--- Component JS -->
+    <script src="../assets/library/jquery.min.js"></script>
+    <script src="../assets/library/iframe-content.js"></script>
+    <script type="text/javascript" src="/dist/components/popup.js"></script>
+    <script type="text/javascript" src="/dist/components/transition.js"></script>
+
     <script src="/assets/library/jquery.min.js"></script>
     <script src="/assets/library/iframe-content.js"></script>
     <script type="text/javascript" src="/dist/components/popup.js"></script>
@@ -61,11 +78,10 @@
     <style>
         body {
             background-color: #DADADA;
-            padding: 1em;
         }
         
         body>.grid {
-            height: 100%;
+            height: 50%;
         }
         
         .image {
@@ -73,7 +89,7 @@
         }
         
         .column {
-            max-width: 450px;
+            max-width: 600px;
         }
         
         #footer {
@@ -83,10 +99,9 @@
         }
         
         #conteudo {
-            position: relative;
-            top: 25%;
+            position: absolute;
             margin-left: 5px;
-            margin-top: -40px;
+            margin-top: 30px;
         }
     </style>
 
@@ -98,6 +113,16 @@
                 document.getElementById("name_").innerHTML = data.profile.name
                 document.getElementById("email_").innerHTML = data.profile.email
                 document.getElementById("tel_").innerHTML = data.profile.tel
+            })
+
+            $.get("/api/user/restaurantsOnline", function(dados) {
+                //alert(JSON.stringify(data));
+                //alert(dados.length)
+                for (var i = 0; dados.length > i; i++) {
+                    //Adicionando registros retornados na tabela
+                    $('#tabela').append('<tr><td>' + dados[i].restaurant[i].name + '</td><td>' + dados[i]._id + '</td><td>' + dados[i].restaurant[i].localization + '</td><td>' + dados[i].restaurant[i].tel + '</td><td>' + dados[i].restaurant[i].email + '</td></tr>');
+                    //$('#tabela').append('<tr><td>' + dados[i].restaurant.name + '</td><td>' + dados[i]._id + '</td><td>' + dados[i].restaurant.localization + '</td><td>' + dados[i].restaurant.tel + '</td><td>' + dados[i].restaurant.email + '</td></tr>');
+                }
             })
 
         })
@@ -112,33 +137,43 @@
             <div class="header item">
                 <img class="logo" src="/images/logo.png"> Quentinha's
             </div>
-            <a href="#" class="item">Inicio</a>
+            <a href="/" class="item">Inicio</a>
             <a href="#" class="item">Sobre</a>
+            <a href="/api/user/logout" class="item">Sair</a>
         </div>
-        <form action="/api/user/logout" method="get">
-            <input type="submit" class="ui fluid large teal submit button" value="Sair">
-        </form>
     </div>
     <div id="conteudo">
-
-        <div class="ui card">
-            <div class="blurring dimmable image">
-                <img src="/images/elliot.jpg">
-            </div>
-            <div class="content">
-                <div class="header">
-                    <span id="name_">Name</span>
+        <table class="ui padded celled left aligned table">
+            <thead>
+                <th class="left aligned">Restaurante</th>
+                <th>CNPJ</th>
+                <th>Localização</th>
+                <th>Telefone</th>
+                <th>E-mail</th>
+            </thead>
+            <tbody id="tabela">
+            </tbody>
+        </table>
+        <div style="padding-top: 100px">
+            <div class="ui card">
+                <div class="blurring dimmable image">
+                    <img src="/images/elliot.jpg">
                 </div>
-                <div class="meta">
-                    <span class="date" id="email_">E-mail</span>
+                <div class="content">
+                    <div class="header">
+                        <span id="name_">Name</span>
+                    </div>
+                    <div class="meta">
+                        <span class="date" id="email_">E-mail</span>
+                    </div>
+                    <div class="meta">
+                        <span class="date" id="tel_">Tel</span>
+                    </div>
                 </div>
-                <div class="meta">
-                    <span class="date" id="tel_">Tel</span>
-                </div>
-            </div>
-            <div class="extra content">
-                <div class="">
-                    <input type="submit" class="ui mini teal button" value="Editar perfil">
+                <div class="extra content">
+                    <div class="">
+                        <input type="submit" class="ui mini teal button" value="Editar perfil">
+                    </div>
                 </div>
             </div>
         </div>

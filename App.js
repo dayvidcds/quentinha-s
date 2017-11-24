@@ -69,11 +69,16 @@ app.use('/restaurant/forgot', (req, res) => {
     res.sendFile(pagesDir + '/restaurant/forgot-password.html')
 })
 
+app.use('/signin', (req, res) => {
+    res.sendFile(publicDir + '/restusersigin.html')
+})
+
+app.use('/signup', (req, res) => {
+    res.sendFile(publicDir + '/restusersigup.html')
+})
+
 app.use('/', (req, res) => {
-    res.send({
-        succes: 'true',
-        message: 'Welcome to API'
-    })
+    res.sendfile(publicDir + '/homepage.html')
 })
 
 module.exports = app
