@@ -52,7 +52,17 @@ class RestaurantRepository {
 
   async findAllOnline () {
     return new Promise((resolve, reject) => {
-      this.RestaurantModel.find({ connected: true }, (err, res) => {
+      this.RestaurantModel.find(
+	  { connected: true },
+	  {
+		_id : 0,
+		cnpj : 1,
+		name : 1,
+		tel : 1,
+		email : 1,
+		localization : 1
+	},
+	  (err, res) => {
         if (err) {
           reject(err)
         }
