@@ -114,7 +114,7 @@ class RouterRestaurant {
         router.get('/findFoodOrder', (req, res) => {
             var restaurantOn = req.cookies.restaurantCookie.restaurant
             var cnpj = restaurantOn.cnpj
-            this.restaurantBusiness.findFoodOrder(cnpj, true).then((resp) => {
+            this.restaurantBusiness.findFoodOrder(cnpj, false).then((resp) => {
                 res.send(resp)
             })
         })
