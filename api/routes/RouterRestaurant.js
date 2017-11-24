@@ -101,6 +101,10 @@ class RouterRestaurant {
             }
         })
 
+        router.get('/profile', (req, res) => {
+            res.sendFile(this.pagesDir + '/restaurant/profile.html')
+        })
+
         router.get('/findAll', (req, res) => {
             this.restaurantBusiness.findAllRestaurants().then((resp) => {
                 res.send(resp)

@@ -16,9 +16,9 @@ class RouterUser {
     }
 
     initializeRoutes() {
+
         router.post('/login', (req, res) => {
             // console.log(req.body)
-
             // clearCookie('userCookie')
             this.userBusiness.login({
                 password: req.body.password,
@@ -73,10 +73,11 @@ class RouterUser {
                 var jwtSecret = 'SECRET'
                 jwt.verify(token, jwtSecret, (err, decoded) => {
                     if (err) {
-                        return res.json({
-                            success: false,
-                            message: 'Falha ao tentar autenticar o token!'
+                        res.cookie('userCookie', {
+                            token: null,
+                            user: null
                         })
+                        return res.redirect('/user/login')
                     } else {
                         // se tudo correr bem, salver a requisição para o uso em outras rotas
                         req.decoded = decoded
@@ -85,10 +86,12 @@ class RouterUser {
                 })
             } else {
                 // se não tiver o token, retornar o erro 403
-                return res.status(403).send({
-                    success: false,
-                    message: 'Não há token.'
+                res.cookie('userCookie', {
+                    token: null,
+                    user: null
                 })
+
+                return res.redirect('/user/login')
             }
         })
 

@@ -15,6 +15,7 @@ const RouterRestaurant = require('./api/routes/routerRestaurant')
 const RouterUser = require('./api/routes/RouterUser')
 const express = require('express')
 const path = require('path')
+const cookieParser = require('cookie-parser')
 
 const app = express()
 
@@ -33,6 +34,7 @@ app.use('/scripts/', express.static(scriptsDir))
 app.use('/dist/', express.static(distDir))
 app.use('/assets/', express.static(assetsDir))
 app.use('/components/', express.static(componentsDir))
+app.use(cookieParser())
 
 const rRep = new RestaurantRepository(db)
 const restaurantBusiness = new RestaurantBusiness(rRep)
@@ -46,7 +48,13 @@ app.use('/api/user', routerUser.router)
 app.use('/api/restaurant', routerRestaurant.router)
 
 app.use('/user/login', (req, res) => {
-    res.sendFile(pagesDir + '/user/sign-in.html')
+    var tokena = req.cookies.userCookie.token // req.body.token || req.query.token || req.headers['x-access-token']
+    if (tokena) {
+        res.redirect('/api/user/profile')
+
+    } else {
+        res.sendFile(pagesDir + '/user/sign-in.html')
+    }
 })
 
 app.use('/user/register', (req, res) => {
@@ -78,7 +86,7 @@ app.use('/signup', (req, res) => {
 })
 
 app.use('/', (req, res) => {
-    res.sendfile(publicDir + '/homepage.html')
+    res.sendFile(publicDir + '/homepage.html')
 })
 
 module.exports = app
