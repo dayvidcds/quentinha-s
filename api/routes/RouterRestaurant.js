@@ -82,10 +82,12 @@ class RouterRestaurant {
                 var jwtSecret = 'SECRET'
                 jwt.verify(token, jwtSecret, (err, decoded) => {
                     if (err) {
-                        return res.json({
-                            success: false,
-                            message: 'Falha ao tentar autenticar o token!'
+                        res.cookie('restaurantCookie', {
+                            token: null,
+                            restaurant: null
                         })
+
+                        return res.redirect('/restaurant/login')
                     } else {
                         // se tudo correr bem, salver a requisição para o uso em outras rotas
                         req.decoded = decoded
@@ -94,10 +96,12 @@ class RouterRestaurant {
                 })
             } else {
                 // se não tiver o token, retornar o erro 403
-                return res.status(403).send({
-                    success: false,
-                    message: 'Não há token.'
+                res.cookie('restaurantCookie', {
+                    token: null,
+                    restaurant: null
                 })
+
+                return res.redirect('/restaurant/login')
             }
         })
 

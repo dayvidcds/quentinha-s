@@ -48,7 +48,16 @@ app.use('/api/user', routerUser.router)
 app.use('/api/restaurant', routerRestaurant.router)
 
 app.use('/user/login', (req, res) => {
-    var tokena = req.cookies.userCookie.token // req.body.token || req.query.token || req.headers['x-access-token']
+    var tokena
+    try {
+        tokena = req.cookies.userCookie.token
+    } catch (ERROR) {
+        res.cookie('userCookie', {
+            token: null,
+            user: null
+        })
+    }
+
     if (tokena) {
         res.redirect('/api/user/profile')
 
@@ -66,7 +75,22 @@ app.use('/user/forgot', (req, res) => {
 })
 
 app.use('/restaurant/login', (req, res) => {
-    res.sendFile(pagesDir + '/restaurant/sign-in.html')
+    var tokena
+    try {
+        tokena = req.cookies.restaurantCookie.token
+    } catch (ERROR) {
+        res.cookie('restaurantCookie', {
+            token: null,
+            restaurant: null
+        })
+    } // req.body.token || req.query.token || req.headers['x-access-token']
+    if (tokena) {
+        res.redirect('/api/restaurant/profile')
+
+    } else {
+        res.sendFile(pagesDir + '/restaurant/sign-in.html')
+    }
+
 })
 
 app.use('/restaurant/register', (req, res) => {
