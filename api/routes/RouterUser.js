@@ -8,9 +8,10 @@ router.use(bodyParser.json())
 router.use(cookieParser())
 
 class RouterUser {
-    constructor(userBusiness, pagesDir) {
+    constructor(userBusiness, pagesDir, foodSaleBusiness) {
         this.userBusiness = userBusiness
         this.initializeRoutes()
+        this.foodSaleBusiness = foodSaleBusiness
         this.pagesDir = pagesDir
         this.router = router
     }
@@ -40,7 +41,8 @@ class RouterUser {
                             }
                         })
                         // res.sendFile(this.pagesDir + '/dash.html')
-                    res.sendFile(this.pagesDir + '/user/profile.html')
+                        //res.sendFile(this.pagesDir + '/user/profile.html')
+                    res.redirect('/api/user/profile')
                 } else {
                     res.cookie('userCookie', {
                         token: null,
@@ -131,16 +133,24 @@ class RouterUser {
             res.sendFile(this.pagesDir + '/user/profile.html')
         })
 
+        router.get('/findFoods/:cnpj', (req, res) => {
+            res.cookie('restaurantInfoCookie', {
+                token: null,
+                restaurant: {
+                    cnpj: req.params.cnpj
+                }
+            })
+            res.sendFile(this.pagesDir + '/user/foods.html')
+        })
+
         router.post('/askFood', (req, res) => {
             var userOn = req.cookies.userCookie.user
-            var cnpj = req.body.cnpj
+            var restaurantOn = req.cookies.restaurantInfoCookie
+            var cnpj = restaurantOn.cnpj
             var food = req.body.food
             var cpf = userOn.cpf
-            foodSaleBusiness.insert(cpf, cnpj, food).then((resp) => {
-                res.send({
-                    success: true,
-                    message: 'food was purchased'
-                })
+            this.foodSaleBusiness.insert(cpf, cnpj, food).then((resp) => {
+                res.redirect('profile')
             })
         })
 

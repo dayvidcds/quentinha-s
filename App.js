@@ -7,6 +7,8 @@ db.then(() => {
     process.exit(1)
 })
 
+const FoodSaleRepository = require('./api/persistence/FoodSaleRepository')
+const FoodSaleBusiness = require('./api/business/FoodSaleBusiness')
 const RestaurantRepository = require('./api/persistence/RestaurantRepository')
 const RestaurantBusiness = require('./api/business/RestaurantBusiness')
 const UserRepository = require('./api/persistence/UserRepository')
@@ -36,13 +38,16 @@ app.use('/assets/', express.static(assetsDir))
 app.use('/components/', express.static(componentsDir))
 app.use(cookieParser())
 
+const fRep = new FoodSaleRepository(db)
+const foodSaleBusiness = new FoodSaleBusiness(fRep)
+
 const rRep = new RestaurantRepository(db)
 const restaurantBusiness = new RestaurantBusiness(rRep)
 const routerRestaurant = new RouterRestaurant(restaurantBusiness, pagesDir)
 
 const uRep = new UserRepository(db)
 const userBusiness = new UserBusiness(uRep)
-const routerUser = new RouterUser(userBusiness, pagesDir)
+const routerUser = new RouterUser(userBusiness, pagesDir, foodSaleBusiness)
 
 app.use('/api/user', routerUser.router)
 app.use('/api/restaurant', routerRestaurant.router)

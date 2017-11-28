@@ -165,7 +165,7 @@ class UserRepository {
                 {
                     $group: {
                         _id: '$sales_full.cnpjRestaurant',
-                        food: {
+                        foods: {
                             $push: {
                                 date: '$sales_full.date',
                                 food: '$sales_full.food'

@@ -95,14 +95,11 @@
             <a class="item" href="/">
           Home
         </a>
-            <a class="item" href="/api/restaurant/addFood">
-            Adicionar Comida
-          </a>
             <a class="item" href="#">
           Sobre
         </a>
             <div class="item right">
-                <div class="ui primary button" onclick="location.href='/api/restaurant/logout'">Sair</div>
+                <div class="ui primary button" onclick="location.href='/api/user/logout'">Sair</div>
             </div>
 
         </div>
@@ -127,26 +124,24 @@
                             <span class="date" id="phone-profile"></span>
                         </div>
                     </div>
-                    <div class="extra content">
-                        <a>
-                            <i class="edit icon"></i> Editar Perfil
-                        </a>
-                    </div>
                 </div>
             </div>
             <div class="twelve wide column">
-                <h2 class="ui header">Lista de pedidos do dia</h2>
-                <table class="ui single line celled table">
-                    <thead>
-                        <tr>
-                            <th>Nº Pedido</th>
-                            <th>Pedido</th>
-                            <th>CPF Cliente</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabela">
-                    </tbody>
-                </table>
+                <form action="/api/user/askFood" method="post">
+                    <h2 class="ui header">Cardápio</h2>
+                    <table class="ui single line celled table">
+                        <thead>
+                            <tr>
+                                <th>Prato</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela">
+                        </tbody>
+                    </table>
+                    <div class="item right">
+                        <input type="submit" class="ui primary button" value="Pedir Quentinha" onclick="alert('Pedido enviado!')">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -155,25 +150,19 @@
     <script>
         $(document).ready(function() {
             //document.getElementById('a').innerHTML = "TESTE"
-            $.get("/api/restaurant/home", function(data) {
-                //alert(JSON.stringify(data));
-                if (data !== null) {
-                    document.getElementById("name-profile").innerHTML = data.profile.name
-                    document.getElementById("email-profile").innerHTML = data.profile.email
-                    document.getElementById("phone-profile").innerHTML = data.profile.tel
-                }
-            })
 
-            $.get("/api/restaurant/findFoodOrder", function(dados) {
+            $.get("/api/restaurant/getPerfil", function(dados) {
                 //document.write(JSON.stringify(dados));
                 //alert(dados.length)
-                if (Array.isArray(dados)) {
-                    var count = 0
-                    for (var i = 0; dados.length > i; i++) {
+                document.getElementById("name-profile").innerHTML = dados.restaurant.name
+                document.getElementById("email-profile").innerHTML = dados.restaurant.email
+                document.getElementById("phone-profile").innerHTML = dados.restaurant.tel
+
+                if (Array.isArray(dados.restaurant.foods)) {
+                    var temp = dados.restaurant.foods
+                    for (var i = 0; temp.length > i; i++) {
                         //Adicionando registros retornados na tabela
-                        for (var j = 0; dados[i].food.length > j; j++) {
-                            $('#tabela').append('<tr><td>' + count++ + '</td><td>' + dados[i].food[j] + '</td><td>' + dados[i]._id + '</td><t/tr>');
-                        }
+                        $('#tabela').append('<tr><td><input type="checkbox" name="food" value = "' + temp[i] + '"><label>' + temp[i] + '</label></td></tr>');
                         //$('#tabela').append('<tr><td>' + dados[i].restaurant[i].name + '</td><td>' + dados[i]._id + '</td><td>' + dados[i].restaurant[i].localization + '</td><td>' + dados[i].restaurant[i].tel + '</td><td>' + dados[i].restaurant[i].email + '</td></tr>');
                     }
                 }

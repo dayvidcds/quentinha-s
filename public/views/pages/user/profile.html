@@ -169,7 +169,7 @@
                 if (Array.isArray(dados)) {
                     for (var i = 0; dados.length > i; i++) {
                         //Adicionando registros retornados na tabela
-                        $('#tabela').append('<tr><td>' + dados[i].name + '</td><td>' + dados[i].cnpj + '</td><td>' + dados[i].localization + '</td><td>' + dados[i].tel + '</td><td>' + dados[i].email + '</td></tr>');
+                        $('#tabela').append('<tr><td><a href="findFoods/' + dados[i].cnpj + '">' + dados[i].name + '</a></td><td>' + dados[i].cnpj + '</td><td>' + dados[i].localization + '</td><td>' + dados[i].tel + '</td><td>' + dados[i].email + '</td></tr>');
                         //$('#tabela').append('<tr><td>' + dados[i].restaurant[i].name + '</td><td>' + dados[i]._id + '</td><td>' + dados[i].restaurant[i].localization + '</td><td>' + dados[i].restaurant[i].tel + '</td><td>' + dados[i].restaurant[i].email + '</td></tr>');
                     }
                 }

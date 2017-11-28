@@ -17,6 +17,25 @@ class RouterRestaurant {
     }
 
     initializeRoutes() {
+
+        router.get('/getPerfil', (req, res) => {
+            var restaurantOn = req.cookies.restaurantCookie.restaurant
+            var cnpj = restaurantOn.cnpj
+            this.restaurantBusiness.findFoods(cnpj.toString()).then((resp) => {
+                res.send({
+                    success: true,
+                    message: 'List of foods',
+                    restaurant: resp
+                })
+            }).catch((resp) => {
+                res.send({
+                    success: false,
+                    message: resp
+                })
+            })
+
+        })
+
         router.post('/login', (req, res) => {
             //console.log(req.body)
 
@@ -42,7 +61,8 @@ class RouterRestaurant {
                             }
                         })
                         //res.redirect('home')
-                    res.sendFile(this.pagesDir + '/restaurant/profile.html')
+                        //res.sendFile(this.pagesDir + '/restaurant/profile.html')
+                    res.redirect('/api/restaurant/profile')
                 } else {
                     res.cookie('restaurantCookie', {
                         token: null,
@@ -109,6 +129,10 @@ class RouterRestaurant {
             res.sendFile(this.pagesDir + '/restaurant/profile.html')
         })
 
+        router.get('/addFood', (req, res) => {
+            res.sendFile(this.pagesDir + '/restaurant/newFood.html')
+        })
+
         router.get('/findAll', (req, res) => {
             this.restaurantBusiness.findAllRestaurants().then((resp) => {
                 res.send(resp)
@@ -124,13 +148,11 @@ class RouterRestaurant {
         })
 
         router.post('/insertFood', (req, res) => {
-            var cnpj = req.body.cnpj
+            var restaurantOn = req.cookies.restaurantCookie.restaurant
+            var cnpj = restaurantOn.cnpj
             var food = req.body.foodName
             this.restaurantBusiness.addFood(cnpj, food)
-            res.send({
-                success: true,
-                message: 'Insert to database'
-            })
+            res.redirect('/api/restaurant/addFood')
         })
 
         router.get('/logout', (req, res) => {
