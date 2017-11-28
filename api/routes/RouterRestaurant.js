@@ -19,9 +19,9 @@ class RouterRestaurant {
     initializeRoutes() {
 
         router.get('/getPerfil', (req, res) => {
-            var restaurantOn = req.cookies.restaurantCookie.restaurant
-            var cnpj = restaurantOn.cnpj
-            this.restaurantBusiness.findFoods(cnpj.toString()).then((resp) => {
+            var restaurantOn = req.cookies.restaurantInfoCookie
+            var cnpj = restaurantOn.restaurant.cnpj.toString()
+            this.restaurantBusiness.findFoods(cnpj).then((resp) => {
                 res.send({
                     success: true,
                     message: 'List of foods',

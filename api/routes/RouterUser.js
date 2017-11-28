@@ -135,7 +135,6 @@ class RouterUser {
 
         router.get('/findFoods/:cnpj', (req, res) => {
             res.cookie('restaurantInfoCookie', {
-                token: null,
                 restaurant: {
                     cnpj: req.params.cnpj
                 }
