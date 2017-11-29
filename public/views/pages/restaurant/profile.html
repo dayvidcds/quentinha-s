@@ -73,6 +73,12 @@
     <script src="/dist/components/transition.js"></script>
 
     <style type="text/css">
+        #table {
+            max-width: 100%;
+            height: 295px;
+            overflow: scroll;
+        }
+        
         h2 {
             margin: 2em 0em;
         }
@@ -94,7 +100,7 @@
                 </div>
             </a>
             <a class="item" href="/">
-          Home
+          Inicio
         </a>
             <a class="item" href="/api/restaurant/addFood">
             Adicionar Comida
@@ -138,18 +144,20 @@
             <div class="twelve wide column">
                 <form>
                     <h2 class="ui header">Lista de pedidos do dia</h2>
-                    <table class="ui single line celled table">
-                        <thead>
-                            <tr>
-                                <th>Feito?</th>
-                                <th>ID Pedido</th>
-                                <th>Pedido</th>
-                                <th>CPF Cliente</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabela">
-                        </tbody>
-                    </table>
+                    <div id="table" class="ui scroll">
+                        <table class="ui single line celled table">
+                            <thead>
+                                <tr>
+                                    <th>Feito?</th>
+                                    <th>ID Pedido</th>
+                                    <th>Pedido</th>
+                                    <th>CPF Cliente</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela">
+                            </tbody>
+                        </table>
+                    </div><br>
                     <div class="item right">
                         <input type="submit" class="ui primary button" value="Marcar como feita!" onclick="alert('Marcada como feita')">
                     </div>

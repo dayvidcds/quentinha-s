@@ -25,35 +25,31 @@ class RouterUser {
                 password: req.body.password,
                 cpf: req.body.cpf
             }).then((resp) => {
-                if (resp) {
-                    var jwtSecret = 'SECRET'
-                    var token = jwt.sign(resp.toJSON(), jwtSecret, {
-                        expiresIn: 1440
-                    })
-                    this.userBusiness.setOnline(resp.cpf, true)
-                    res.cookie('userCookie', {
-                            token: token,
-                            user: {
-                                name: resp.name,
-                                cpf: resp.cpf,
-                                email: resp.email,
-                                tel: resp.tel
-                            }
-                        })
-                        // res.sendFile(this.pagesDir + '/dash.html')
-                        //res.sendFile(this.pagesDir + '/user/profile.html')
-                    res.redirect('/api/user/profile')
-                } else {
-                    res.cookie('userCookie', {
-                        token: null,
-                        user: null
-                    })
-                    res.json({
-                        success: false,
-                        message: 'CPF ou senha inválidos!',
-                        token: null
-                    })
-                }
+                var jwtSecret = 'SECRET'
+                var token = jwt.sign(resp.toJSON(), jwtSecret, {
+                    expiresIn: 1440
+                })
+                this.userBusiness.setOnline(resp.cpf, true)
+                res.cookie('userCookie', {
+                    token: token,
+                    user: {
+                        name: resp.name,
+                        cpf: resp.cpf,
+                        email: resp.email,
+                        tel: resp.tel
+                    }
+                })
+                res.redirect('/api/user/profile')
+            }).catch((res) => {
+                res.cookie('userCookie', {
+                    token: null,
+                    user: null
+                })
+                res.send({
+                    success: res,
+                    message: 'CPF ou senha inválidos!',
+                    token: null
+                })
             })
         })
 

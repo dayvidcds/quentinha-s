@@ -10,7 +10,7 @@ class RestaurantBusiness {
             try {
                 const salt = bcrypt.genSaltSync(10)
                 const hash = bcrypt.hashSync(restaurant.password, salt)
-                this.repository.findByCnpj(restaurant.cpf).catch((error) => {
+                this.repository.findByCnpj(restaurant.cnpj).catch((error) => {
                     // console.log(error)
                     this.repository.insert({
                         cnpj: restaurant.cnpj,
@@ -23,6 +23,8 @@ class RestaurantBusiness {
                     }).then((u) => {
                         resolve(u)
                     })
+                }).then((resp) => {
+                    reject(resp)
                 })
             } catch (error) {
                 reject(error)

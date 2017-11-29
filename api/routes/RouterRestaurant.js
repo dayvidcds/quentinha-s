@@ -19,7 +19,7 @@ class RouterRestaurant {
     initializeRoutes() {
 
         router.get('/getPerfil', (req, res) => {
-            var restaurantOn = req.cookies.restaurantInfoCookie
+            var restaurantOn = req.cookies.restaurantInfoCookie //|| req.cookies.restaurantCookie
             var cnpj = restaurantOn.restaurant.cnpj.toString()
             this.restaurantBusiness.findFoods(cnpj).then((resp) => {
                 res.send({
@@ -44,36 +44,32 @@ class RouterRestaurant {
                 password: req.body.password,
                 cnpj: req.body.cnpj
             }).then((resp) => {
-                if (resp) {
-                    var jwtSecret = 'SECRET'
-                    var token = jwt.sign(resp.toJSON(), jwtSecret, {
-                        expiresIn: 3000
-                    })
-                    this.restaurantBusiness.setOnline(resp.cnpj, true)
-                    res.cookie('restaurantCookie', {
-                            token: token,
-                            restaurant: {
-                                name: resp.name,
-                                cnpj: resp.cnpj,
-                                email: resp.email,
-                                tel: resp.tel,
-                                localization: resp.localization
-                            }
-                        })
-                        //res.redirect('home')
-                        //res.sendFile(this.pagesDir + '/restaurant/profile.html')
-                    res.redirect('/api/restaurant/profile')
-                } else {
-                    res.cookie('restaurantCookie', {
-                        token: null,
-                        restaurant: null
-                    })
-                    res.send({
-                        success: false,
-                        message: 'CNPJ ou senha inválidos!',
-                        token: null
-                    })
-                }
+                var jwtSecret = 'SECRET'
+                var token = jwt.sign(resp.toJSON(), jwtSecret, {
+                    expiresIn: 30000
+                })
+                this.restaurantBusiness.setOnline(resp.cnpj, true)
+                res.cookie('restaurantCookie', {
+                    token: token,
+                    restaurant: {
+                        name: resp.name,
+                        cnpj: resp.cnpj,
+                        email: resp.email,
+                        tel: resp.tel,
+                        localization: resp.localization
+                    }
+                })
+                res.redirect('/api/restaurant/profile')
+            }).catch((resp) => {
+                res.cookie('restaurantCookie', {
+                    token: null,
+                    restaurant: null
+                })
+                res.send({
+                    success: false,
+                    message: 'CNPJ ou senha inválidos!',
+                    token: null
+                })
             })
         })
 

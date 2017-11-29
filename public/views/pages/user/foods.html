@@ -73,6 +73,12 @@
     <script src="/dist/components/transition.js"></script>
 
     <style type="text/css">
+        #table {
+            max-width: 100%;
+            height: 254px;
+            overflow: scroll;
+        }
+        
         h2 {
             margin: 2em 0em;
         }
@@ -93,8 +99,8 @@
                     <img class="logo" style=" max-width: 100%; height: auto; width: auto\9; /* ie8 */" src="/images/logo.png"> Quentinha's
                 </div>
             </a>
-            <a class="item" href="/">
-          Home
+            <a class="item" href="/api/user/profile">
+          Inicio
         </a>
             <a class="item" href="#">
           Sobre
@@ -130,15 +136,17 @@
             <div class="twelve wide column">
                 <form action="/api/user/askFood" method="post">
                     <h2 class="ui header">Cardápio</h2>
-                    <table class="ui single line celled table">
-                        <thead>
-                            <tr>
-                                <th>Prato</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabela">
-                        </tbody>
-                    </table>
+                    <div id="table">
+                        <table class="ui single line celled table">
+                            <thead>
+                                <tr>
+                                    <th>Prato</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela">
+                            </tbody>
+                        </table>
+                    </div><br>
                     <div class="item right">
                         <input type="submit" class="ui primary button" value="Pedir Quentinha!" onclick="alert('Pedido enviado!')">
                     </div>

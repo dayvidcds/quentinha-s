@@ -16,14 +16,9 @@ class UserRepository {
 
     async insert(user) {
         return new Promise((resolve, reject) => {
-            var error = ''
             var userRep = new this.userModel(user)
             userRep.save((err, res) => {
                 if (err) {
-                    error = err
-                }
-                if (error !== '') {
-                    // throw new Error(error)
                     reject(err)
                 }
                 resolve(res)

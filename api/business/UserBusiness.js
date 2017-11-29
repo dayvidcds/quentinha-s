@@ -1,8 +1,8 @@
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt')
 
 class UserBusiness {
     constructor(userRepository) {
-        this.repository = userRepository;
+        this.repository = userRepository
     }
 
     checkCpf(cpf) {
@@ -14,18 +14,11 @@ class UserBusiness {
     }
 
     async insert(user) {
-        //checkName(user.name)
-        //checkCpf(user.cpf)
         return new Promise((resolve, reject) => {
-            var userExist = false
-            var retorno = null
             try {
-                this.checkCpf(user.cpf)
-                this.checkName(user.name)
-                var salt = bcrypt.genSaltSync(10);
+                var salt = bcrypt.genSaltSync(10)
                 var hash = bcrypt.hashSync(user.password, salt)
                 this.repository.findByCpf(user.cpf).catch((error) => {
-                    //console.log(error)
                     this.repository.insert({
                         cpf: user.cpf,
                         name: user.name,
@@ -36,6 +29,8 @@ class UserBusiness {
                     }).then((u) => {
                         resolve(u)
                     })
+                }).then((resp) => {
+                    reject(resp)
                 })
             } catch (error) {
                 console.log(error)
@@ -83,12 +78,14 @@ class UserBusiness {
                 var senha = false
                 var cpf = false
                 this.repository.findByCpf(user.cpf).then((res) => {
-                    var foi = bcrypt.compareSync(user.password, res.password);
+                    var foi = bcrypt.compareSync(user.password, res.password)
                     if (foi === true) {
                         resolve(res)
                     } else {
-                        resolve(null)
+                        reject(foi)
                     }
+                }).catch((res) => {
+                    reject(res)
                 })
 
             } catch (error) {
