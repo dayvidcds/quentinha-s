@@ -145,7 +145,7 @@ class RouterUser {
         router.post('/askFood', (req, res) => {
             var userOn = req.cookies.userCookie.user
             var restaurantOn = req.cookies.restaurantInfoCookie
-            var cnpj = restaurantOn.cnpj
+            var cnpj = restaurantOn.restaurant.cnpj
             var food = req.body.food
             var cpf = userOn.cpf
             this.foodSaleBusiness.insert(cpf, cnpj, food).then((resp) => {

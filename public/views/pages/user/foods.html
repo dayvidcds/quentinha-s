@@ -52,6 +52,7 @@
     <link rel="stylesheet" type="text/css" href="/dist/components/button.css">
     <link rel="stylesheet" type="text/css" href="/dist/components/transition.css">
     <link rel="stylesheet" type="text/css" href="/dist/components/popup.css">
+    <link rel="stylesheet" type="text/css" href="/dist/semantic.css">
 
     <!--- Component JS -->
     <script src="../assets/library/jquery.min.js"></script>
@@ -139,7 +140,7 @@
                         </tbody>
                     </table>
                     <div class="item right">
-                        <input type="submit" class="ui primary button" value="Pedir Quentinha" onclick="alert('Pedido enviado!')">
+                        <input type="submit" class="ui primary button" value="Pedir Quentinha!" onclick="alert('Pedido enviado!')">
                     </div>
                 </form>
             </div>
@@ -162,7 +163,7 @@
                     var temp = dados.restaurant.foods
                     for (var i = 0; temp.length > i; i++) {
                         //Adicionando registros retornados na tabela
-                        $('#tabela').append('<tr><td><input type="checkbox" name="food" value = "' + temp[i] + '"><label>' + temp[i] + '</label></td></tr>');
+                        $('#tabela').append('<tr><td><div class="ui checkbox"><input type="checkbox" name="food" value = "' + temp[i] + '"><label>' + temp[i] + '</label></div></td></tr>');
                         //$('#tabela').append('<tr><td>' + dados[i].restaurant[i].name + '</td><td>' + dados[i]._id + '</td><td>' + dados[i].restaurant[i].localization + '</td><td>' + dados[i].restaurant[i].tel + '</td><td>' + dados[i].restaurant[i].email + '</td></tr>');
                     }
                 }

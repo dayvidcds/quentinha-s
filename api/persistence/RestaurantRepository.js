@@ -78,6 +78,10 @@ class RestaurantRepository {
             })
     }
 
+    async setDone() {
+        // a fazer
+    }
+
     async addFood(cnpj, food) {
         this.RestaurantModel.findOneAndUpdate({ cnpj: cnpj }, { $push: { listOfFoods: food } }, (err, res) => {
             if (err) {
@@ -112,7 +116,10 @@ class RestaurantRepository {
                 $group: {
                     _id: '$sales_full.cpfUser',
                     food: {
-                        $push: '$sales_full.food'
+                        $push: {
+                            idFood: '$sales_full._id',
+                            foods: '$sales_full.food'
+                        }
                     }
                 }
             }], (err, res) => {

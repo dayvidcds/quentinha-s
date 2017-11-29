@@ -52,6 +52,7 @@
     <link rel="stylesheet" type="text/css" href="/dist/components/button.css">
     <link rel="stylesheet" type="text/css" href="/dist/components/transition.css">
     <link rel="stylesheet" type="text/css" href="/dist/components/popup.css">
+    <link rel="stylesheet" type="text/css" href="/dist/semantic.css">
 
     <!--- Component JS -->
     <script src="../assets/library/jquery.min.js"></script>
@@ -135,18 +136,24 @@
                 </div>
             </div>
             <div class="twelve wide column">
-                <h2 class="ui header">Lista de pedidos do dia</h2>
-                <table class="ui single line celled table">
-                    <thead>
-                        <tr>
-                            <th>Nº Pedido</th>
-                            <th>Pedido</th>
-                            <th>CPF Cliente</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabela">
-                    </tbody>
-                </table>
+                <form>
+                    <h2 class="ui header">Lista de pedidos do dia</h2>
+                    <table class="ui single line celled table">
+                        <thead>
+                            <tr>
+                                <th>Feito?</th>
+                                <th>ID Pedido</th>
+                                <th>Pedido</th>
+                                <th>CPF Cliente</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela">
+                        </tbody>
+                    </table>
+                    <div class="item right">
+                        <input type="submit" class="ui primary button" value="Marcar como feita!" onclick="alert('Marcada como feita')">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -168,11 +175,11 @@
                 //document.write(JSON.stringify(dados));
                 //alert(dados.length)
                 if (Array.isArray(dados)) {
-                    var count = 0
+                    var count = 1
                     for (var i = 0; dados.length > i; i++) {
                         //Adicionando registros retornados na tabela
                         for (var j = 0; dados[i].food.length > j; j++) {
-                            $('#tabela').append('<tr><td>' + count++ + '</td><td>' + dados[i].food[j] + '</td><td>' + dados[i]._id + '</td><t/tr>');
+                            $('#tabela').append('<tr><td><div class="ui checkbox"><input type="checkbox" name="food" value="' + dados[i]._id + '"><label></label></td><td>' + dados[i].food[j].idFood + '</td><td>' + dados[i].food[j].foods + '</td><td>' + dados[i]._id + '</td><t/tr>');
                         }
                         //$('#tabela').append('<tr><td>' + dados[i].restaurant[i].name + '</td><td>' + dados[i]._id + '</td><td>' + dados[i].restaurant[i].localization + '</td><td>' + dados[i].restaurant[i].tel + '</td><td>' + dados[i].restaurant[i].email + '</td></tr>');
                     }
