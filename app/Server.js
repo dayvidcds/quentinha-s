@@ -1,5 +1,5 @@
 const app = require('./App')
-const port = process.env.PORT || 80
+const port = process.env.PORT || 3000
 
 const server = app.listen(port, (err, res) => {
     var error = ''

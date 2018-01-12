@@ -1,3 +1,0 @@
-{"_id":{"$oid":"5a11b746abc83827a8940b0d"},"cpf":"11735029475","name":"dayvid clementino da silva","password":"$2a$10$lFUtrKVw2Xo1Pk41dpjuyOffu2zx3Jtpp/jMp/bS2ag7Dmrw61Nr2","tel":"123456789","email":"dayvid.blender@gmail.com","connected":false,"__v":0}
-{"_id":{"$oid":"5a11b76cabc83827a8940b0e"},"cpf":"11769313427","name":"Wedson Soares","password":"$2a$10$PWE/gAuAHDRGeBY9EA8EMucn2Af/DGO13Zf7ExO9axeGba4EipbhS","tel":"123456789","email":"wedson@gmail.com","connected":false,"__v":0}
-{"_id":{"$oid":"5a11b781abc83827a8940b0f"},"cpf":"123456","name":"Fernando Guilhermino","password":"$2a$10$TpY57a5dVHUfR9J8tVGyyuNTMS6iIHyY16sPZQED1HAisV01dPJZG","tel":"123456789","email":"fernando@totoso.com","connected":false,"__v":0}

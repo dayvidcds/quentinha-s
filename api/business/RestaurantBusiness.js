@@ -23,8 +23,6 @@ class RestaurantBusiness {
                     }).then((u) => {
                         resolve(u)
                     })
-                }).then((resp) => {
-                    reject(resp)
                 })
             } catch (error) {
                 reject(error)

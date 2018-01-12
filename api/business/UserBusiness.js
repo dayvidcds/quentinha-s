@@ -29,8 +29,6 @@ class UserBusiness {
                     }).then((u) => {
                         resolve(u)
                     })
-                }).then((resp) => {
-                    reject(resp)
                 })
             } catch (error) {
                 console.log(error)

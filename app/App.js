@@ -1,4 +1,4 @@
-const db = require('./api/persistence/ConnectionDB')
+const db = require('../api/persistence/ConnectionDB')
 
 db.then(() => {
     console.log('MONGO CONNECTIONS(SUCESS)')
@@ -7,14 +7,14 @@ db.then(() => {
     process.exit(1)
 })
 
-const FoodSaleRepository = require('./api/persistence/FoodSaleRepository')
-const FoodSaleBusiness = require('./api/business/FoodSaleBusiness')
-const RestaurantRepository = require('./api/persistence/RestaurantRepository')
-const RestaurantBusiness = require('./api/business/RestaurantBusiness')
-const UserRepository = require('./api/persistence/UserRepository')
-const UserBusiness = require('./api/business/UserBusiness')
-const RouterRestaurant = require('./api/routes/routerRestaurant')
-const RouterUser = require('./api/routes/RouterUser')
+const FoodSaleRepository = require('../api/persistence/FoodSaleRepository')
+const FoodSaleBusiness = require('../api/business/FoodSaleBusiness')
+const RestaurantRepository = require('../api/persistence/RestaurantRepository')
+const RestaurantBusiness = require('../api/business/RestaurantBusiness')
+const UserRepository = require('../api/persistence/UserRepository')
+const UserBusiness = require('../api/business/UserBusiness')
+const RouterRestaurant = require('../api/routes/routerRestaurant')
+const RouterUser = require('../api/routes/RouterUser')
 const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
