@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "API...",
     "engines": {
-        "node": "6.0.0",
+        "node": "^7.8.0",
         "npm": "^2.1.x"
     },
     "keywords": [
@@ -15,7 +15,7 @@
         "start": "node ./app/Server.js"
     },
     "dependencies": {
-        "bcrypt": "^1.0.3",
+        "bcrypt-nodejs": "0.0.3",
         "body-parser": "^1.18.2",
         "consolidate": "^0.15.0",
         "cookie-parser": "^1.4.3",
