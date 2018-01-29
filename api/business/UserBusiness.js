@@ -1,4 +1,4 @@
-var bcrypt = require('bcrypt')
+var bcrypt = require('bcrypt-nodejs')
 
 class UserBusiness {
     constructor(userRepository) {
